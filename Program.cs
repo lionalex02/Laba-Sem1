@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+
 
 namespace HoplessProject
 {
@@ -11,90 +9,124 @@ namespace HoplessProject
     {
         static void Main()
         {
-            string input = Console.ReadLine().Replace(" ", "");
-            List<double> numbers = new List<double>();
-            List<char> operations = new List<char>();
-
-            Parsing(numbers, operations, input);
-            Console.WriteLine("Выражение состоит из цифр: " + string.Join(" ", numbers));
-            Console.WriteLine("Выражение состоит из операторов: " + string.Join(" ", operations));
-            Сomputation(numbers, operations);
-
-            Console.WriteLine("Итог выражения: " + string.Join(" ", numbers));
-           
+            Console.Write("Введите выражение: ");
+            string input = Console.ReadLine().Replace("\t", " ").Replace(" ", "");
+            List<object> postPars = Parsing(input);
+            List<object> rpn = KurwaChange(postPars);
+            List<object> absoluteFinale = Calculating(rpn);
+            Console.WriteLine("Выражение в виде ОПЗ: " + string.Join(" ", rpn));
+            Console.WriteLine("Итог выражения: " + string.Join(" ", absoluteFinale));
         }
-
-        public static void Parsing(List<double> numbers, List<char> operations, string input)
+        public static List<object> Parsing(string input)
         {
-
+            List<object> finals = new();
+            List<double> numbersOut = new();
             string number = "";
-            for (int i = 0; i < input.Length; i++)
+            foreach (char tokens in input)
             {
-
-                if (!char.IsDigit(input[i]))
+                if (tokens != ' ')
                 {
-                    numbers.Add(double.Parse(number));
-                    operations.Add(input[i]);
-                    number = "";
-                }
-                else
-                {
-                    number += input[i];
+                    if (!char.IsDigit(tokens))
+                    {
+                        if (number != "")
+                        {
+                            finals.Add(number);
+                            numbersOut.Add(double.Parse(number));
+                        }
+                        finals.Add(tokens);
+                        number = "";
+                    }
+                    else
+                        number += tokens;
                 }
             }
-            numbers.Add(double.Parse(number));
+            if (number != "")
+            {
+                finals.Add(number);
+                numbersOut.Add(double.Parse(number));
+            }
+            Console.WriteLine("Выражение состоит из цифр: " + string.Join(" ", numbersOut));
+            return finals;
         }
-
-        public static void Сomputation(List<double> numbers, List<char> operations)
+        static int PriorityOper(object priority)
         {
-            while (operations.Count > 0)
+            return priority switch
             {
-
-                if (operations.Contains('*') || operations.Contains('/'))
-                {
-                    int mult = operations.IndexOf('*');
-                    int divis = operations.IndexOf('/');
-                    int doer;
-
-                    if (mult == -1) doer = divis;
-                    else if (divis == -1) doer = mult;
-                    else doer = Math.Min(divis, mult);
-                    
-                    double subsequent = GetNumber(numbers[doer], numbers[doer + 1], operations[doer]);
-
-                    numbers.RemoveAt(doer +1);
-                    numbers.RemoveAt(doer);
-                    operations.RemoveAt(doer);
-
-                    numbers.Insert(doer, subsequent);
-                }
-                else if (operations.Contains('+') || operations.Contains('-'))
-                {
-                    double subsequent = GetNumber(numbers[0], numbers[1], operations[0]);
-
-                    numbers.RemoveAt(1);
-                    numbers.RemoveAt(0);
-                    operations.RemoveAt(0);
-
-                    numbers.Insert(0, subsequent);
-                }
-            }
+                '+' or '-' => 1,
+                '*' or '/' => 2,
+                _ => 0,
+            };
         }
 
-        public static double GetNumber(double number1, double number2, char operation)
+        public static List<object> KurwaChange(List<object> postPars)
         {
-            switch (operation)
+            Stack<object> boofer = new();
+            List<object> finals = new();
+            List<object> operant = new();
+            foreach (object tokens in postPars)
             {
-                case '+': return 
-                        number1 + number2;
-                case '-': return 
-                        number1 - number2;
-                case '*': return 
-                        number1 * number2;
-                case '/': return 
-                        number1 / number2;
-                default: return 0;
+                if (tokens.Equals('+') ^ tokens.Equals('-') ^ tokens.Equals('*') ^ tokens.Equals('/'))
+                {
+                    if (boofer.Count() > 0 && PriorityOper(boofer.Peek()) >= PriorityOper(tokens))
+                    {
+                        operant.Add(boofer.Peek());
+                        finals.Add(boofer.Pop());
+                    }
+                    boofer.Push(tokens);
+                }
+                else if (tokens.Equals('('))
+                    boofer.Push(tokens);
+
+                else if (tokens.Equals(')'))
+                {
+                    while (!boofer.Peek().Equals('('))
+                    {
+                        finals.Add(boofer.Pop());
+                    }
+                    boofer.Pop();
+                }
+                else if (tokens is string)
+                    finals.Add(tokens);
+
             }
+            while (boofer.Count() > 0)
+            {
+                operant.Add(boofer.Peek());
+                finals.Add(boofer.Pop());
+            }
+            Console.WriteLine("Выражение состоит из операторов: " + string.Join(" ", operant));
+            return finals;
         }
-    }   
+        public static double GetNumber(double number1, double number2, object priority)
+        {
+            return priority switch
+            {
+                '+' => number1 + number2,
+                '-' => number1 - number2,
+                '*' => number1 * number2,
+                '/' => number1 / number2,
+                _ => 0
+            };
+        }
+        public static List<object> Calculating(List<object> rpn)
+        {
+            Stack<object> boofer = new();
+            List<object> finals = new();
+            List<object> TEST = new();
+            foreach (object tokens in rpn)
+            {
+                if (tokens.Equals('+') ^ tokens.Equals('-') ^ tokens.Equals('*') ^ tokens.Equals('/'))
+                {
+                    double number2 = Convert.ToDouble(boofer.Pop());
+                    double number1 = Convert.ToDouble(boofer.Pop());
+                    object priority = GetNumber(number1, number2, tokens);
+                    boofer.Push(priority);
+                }
+                else if (tokens is string)
+                    boofer.Push(tokens);
+            }
+            finals.Add(boofer.Peek());
+            return finals;
+        }
+    }
 }
