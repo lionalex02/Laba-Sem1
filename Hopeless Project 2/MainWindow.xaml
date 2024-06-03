@@ -1,0 +1,45 @@
+﻿<Window x:Class="Hopeless_Project_2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="551" Width="991">
+    <Grid>
+
+
+        <Button x:Name="button" Click="Button_Click" Content="Обновить" HorizontalAlignment="Left" Margin="822,181,0,0" VerticalAlignment="Top" Width="120" Height="20"/>
+        <Label Content="Количество точек" HorizontalAlignment="Left" Margin="822,84,0,0" VerticalAlignment="Top" Width="122" Height="26"/>
+        <TextBox x:Name="tbExpression" HorizontalAlignment="Left" Margin="162,23,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="313" Height="22" />
+        <Label Content="Введите выражение:" HorizontalAlignment="Left" Margin="19,21,0,0" VerticalAlignment="Top" Width="130" Height="26"/>
+        <Canvas x:Name="canvas" ClipToBounds="True" Margin="18,76,0,0" Height="414" VerticalAlignment="Top" HorizontalAlignment="Left" Width="724"/>
+        <Slider Name="scaleSlider" HorizontalAlignment="Left" Margin="591,25,0,0" VerticalAlignment="Top" Width="376" Height="25" Minimum="2" Maximum="100" SmallChange="1" TickFrequency="1"/>
+        <ScrollBar x:Name="sbVertical" HorizontalAlignment="Left" Margin="756,76,0,0" VerticalAlignment="Top" Height="414" Width="22" Minimum="-10" Maximum="10" RenderTransformOrigin="0.5,0.5">
+            <ScrollBar.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-180"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </ScrollBar.RenderTransform>
+        </ScrollBar>
+        <ScrollBar x:Name="sbHorizontal" HorizontalAlignment="Left" Margin="372,0,0,-326" RenderTransformOrigin="0.633,0.504" Width="21" Height="696" VerticalAlignment="Bottom" Maximum="10" Minimum="-10" SmallChange="1">
+            <ScrollBar.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform X="-5.577" Y="0.009"/>
+                </TransformGroup>
+            </ScrollBar.RenderTransform>
+        </ScrollBar>
+        <Slider x:Name="sbStep" HorizontalAlignment="Left" Margin="820,113,0,0" VerticalAlignment="Top" Width="120" Minimum="0.1" Maximum="1" Value="1"/>
+        <Label Content="Масштаб" HorizontalAlignment="Left" Margin="517,21,0,0" VerticalAlignment="Top"/>
+        <Label Content="1" HorizontalAlignment="Left" Margin="580,41,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.334,0.581"/>
+        <Label Content="100" HorizontalAlignment="Left" Margin="938,43,0,0" VerticalAlignment="Top"/>
+        <Label Content="1" HorizontalAlignment="Left" Margin="942,130,0,0" VerticalAlignment="Top"/>
+        <Label Content="0,1" HorizontalAlignment="Left" Margin="799,127,0,0" VerticalAlignment="Top" Width="24"/>
+
+    </Grid>
+</Window>
