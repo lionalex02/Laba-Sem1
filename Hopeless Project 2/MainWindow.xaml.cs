@@ -13,30 +13,30 @@ namespace Hopeless_Project_2
         public MainWindow()
         {
             InitializeComponent();
-            scaleSlider.ValueChanged += scaleSlider_ValueChanged;
-            sbHorizontal.ValueChanged += SbHorizontal_ValueChanged;
-            sbVertical.ValueChanged += SbVertical_ValueChanged;
-            sbStep.ValueChanged += SbStep_ValueChanged;
+            scaleSlider.ValueChanged += scaleSliderValueChanged;
+            sbHorizontal.ValueChanged += SbHorizontalValueChanged;
+            sbVertical.ValueChanged += SbVerticalValueChanged;
+            sbStep.ValueChanged += SbStepValueChanged;
         }
 
-        private void scaleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) // Масштаб
+        private void scaleSliderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) // Масштаб
         {
             string expression = tbExpression.Text.ToLower().Replace(".", ",");
             DrawGraph(expression, scaleSlider.Value, sbHorizontal.Value, sbVertical.Value, sbStep.Value);
         }
-        private void SbStep_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) // Плотность точек
-        {
-            string expression = tbExpression.Text.ToLower().Replace(".", ",");
-            DrawGraph(expression, scaleSlider.Value, sbHorizontal.Value, sbVertical.Value, sbStep.Value);
-        }
-
-        private void SbHorizontal_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) // Горизонтальный ползунок
+        private void SbStepValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) // Плотность точек
         {
             string expression = tbExpression.Text.ToLower().Replace(".", ",");
             DrawGraph(expression, scaleSlider.Value, sbHorizontal.Value, sbVertical.Value, sbStep.Value);
         }
 
-        private void SbVertical_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) // Вертикальный ползунок
+        private void SbHorizontalValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) // Горизонтальный ползунок
+        {
+            string expression = tbExpression.Text.ToLower().Replace(".", ",");
+            DrawGraph(expression, scaleSlider.Value, sbHorizontal.Value, sbVertical.Value, sbStep.Value);
+        }
+
+        private void SbVerticalValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) // Вертикальный ползунок
         {
             string expression = tbExpression.Text.ToLower().Replace(".", ",");
             DrawGraph(expression, scaleSlider.Value, sbHorizontal.Value, sbVertical.Value, sbStep.Value);
