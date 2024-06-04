@@ -33,7 +33,6 @@ namespace RPN.Logic
         {
             List<Token> postPars = Parsing(input);
             List<Token> rpn = PolishChange(postPars);
-            Print(rpn);
             double absoluteFinale = Calculating(rpn, x);
             return absoluteFinale;
         }
@@ -202,7 +201,6 @@ namespace RPN.Logic
                 
             }
             return boofer.Peek();
-            //return boofer.Pop();
         }
         private double ExecuteDouble(Operation op, double[] args)
         {
@@ -214,31 +212,5 @@ namespace RPN.Logic
             Number resultNumber = op.Execute(numbers);
             return resultNumber.Numbering;
         }
-
-        private void Print(List<Token> tokens)
-        {
-            foreach (Token token in tokens)
-            {
-                if (token is Number num)
-                {
-                    Console.Write(num.Numbering + " ");
-                }
-                else if (token is Variable var)
-                { 
-                    Console.Write(var.variable + " ");
-
-                }
-                else if (token is Operation op)
-                {
-                    Console.Write(op.Name + " ");
-                }
-                else if (token is Parenthesis par)
-                {
-                    Console.Write(par.bracket ? "( " : ") ");
-                }
-            }
-            Console.Write("\n");
-        }
-
     }
 }

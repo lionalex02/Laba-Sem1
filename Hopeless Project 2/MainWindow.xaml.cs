@@ -58,8 +58,6 @@ namespace Hopeless_Project_2
             double start = (-canvas.ActualWidth / 2) ;
             double end = (canvas.ActualHeight / 2) ;
             // double step = 1.0 - (Math.Round(scale) - 1.0) * 0.9 / 99.0;
-            
-            
 
             Line xAxis = new Line
             {
@@ -129,7 +127,6 @@ namespace Hopeless_Project_2
                     Fill = Brushes.Black
                 };
 
-
                 Canvas.SetLeft(ellipse, x * scale + ((canvas.ActualWidth / 2) + horizontal * scale));
                 Canvas.SetTop(ellipse, y + vertical* scale );
 
@@ -151,12 +148,8 @@ namespace Hopeless_Project_2
 
                 previousPoint = new Point(Canvas.GetLeft(ellipse), Canvas.GetTop(ellipse));
             }
-
         }
-
     }
-
-
 }
 
 
